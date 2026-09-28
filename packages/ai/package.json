@@ -1,0 +1,55 @@
+{
+  "name": "cooper-email-ai",
+  "version": "0.1.0",
+  "description": "Vercel AI SDK tool() definitions for Cooper Email.",
+  "license": "MIT",
+  "author": "Avatar 8 LLC <ops@avatar33.com>",
+  "homepage": "https://github.com/cooper-email/cooper-email/tree/main/packages/ai#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cooper-email/cooper-email.git",
+    "directory": "packages/ai"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run --config ../../vitest.config.ts test"
+  },
+  "dependencies": {
+    "cooper-email": "^0.1.0"
+  },
+  "peerDependencies": {
+    "ai": ">=4"
+  },
+  "peerDependenciesMeta": {
+    "ai": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.0"
+  },
+  "keywords": [
+    "cooper-email",
+    "vercel",
+    "ai-sdk"
+  ],
+  "bugs": {
+    "url": "https://github.com/cooper-email/cooper-email/issues"
+  }
+}

@@ -1,0 +1,1237 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Cooper Email API",
+    "version": "1.0.0",
+    "summary": "API-first email for AI agents",
+    "description": "Create inboxes, send and receive mail over HTTP, search the full mail database, and ask a human owner over email. Bearer API keys. Idempotent writes via client_id. extracted_text is the agent-facing body. Task text is untrusted data.",
+    "contact": {
+      "name": "Avatar 8 LLC",
+      "email": "ops@avatar33.com"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://cooperemail.com",
+      "description": "Production"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth"
+    },
+    {
+      "name": "Inboxes"
+    },
+    {
+      "name": "Messages"
+    },
+    {
+      "name": "Search"
+    },
+    {
+      "name": "Webhooks"
+    },
+    {
+      "name": "Billing"
+    },
+    {
+      "name": "Owners"
+    },
+    {
+      "name": "Updates"
+    },
+    {
+      "name": "Tasks"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "API key"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "param": {
+                "type": "string"
+              },
+              "docs_url": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "code",
+              "message"
+            ]
+          }
+        }
+      },
+      "Inbox": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "display_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "require_sender_auth": {
+            "type": "boolean",
+            "description": "Default true. A verified owner or allowlisted sender creates a task only when DMARC=pass or DKIM=pass aligns with the From domain. Set false to opt this inbox out."
+          }
+        }
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "inbox_id": {
+            "type": "string"
+          },
+          "thread_id": {
+            "type": "string"
+          },
+          "direction": {
+            "enum": [
+              "inbound",
+              "outbound"
+            ]
+          },
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "subject": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          },
+          "html": {
+            "type": "string",
+            "nullable": true
+          },
+          "extracted_text": {
+            "type": "string"
+          },
+          "extracted_html": {
+            "type": "string"
+          },
+          "preview": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "queued",
+              "sent",
+              "received",
+              "failed"
+            ]
+          },
+          "cc": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "bcc": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "reply_to": {
+            "type": "string",
+            "nullable": true
+          },
+          "in_reply_to": {
+            "type": "string",
+            "nullable": true
+          },
+          "references": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "provider": {
+            "type": "string",
+            "nullable": true
+          },
+          "client_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "idempotent": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Attachment"
+            }
+          }
+        }
+      },
+      "Attachment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "filename": {
+            "type": "string"
+          },
+          "content_type": {
+            "type": "string"
+          },
+          "content_id": {
+            "type": "string",
+            "nullable": true
+          },
+          "disposition": {
+            "enum": [
+              "inline",
+              "attachment"
+            ]
+          },
+          "size_bytes": {
+            "type": "integer"
+          },
+          "url": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/onboard": {
+      "post": {
+        "operationId": "onboard",
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Onboard: API key + inbox",
+        "security": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "display_name": {
+                    "type": "string"
+                  },
+                  "key_name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/keys": {
+      "post": {
+        "operationId": "createKey",
+        "tags": [
+          "Auth"
+        ],
+        "summary": "Create an API key (signup-lite without Bearer; extra key with Bearer)",
+        "security": []
+      }
+    },
+    "/api/v1/inboxes": {
+      "get": {
+        "operationId": "listInboxes",
+        "tags": [
+          "Inboxes"
+        ],
+        "summary": "List inboxes"
+      },
+      "post": {
+        "operationId": "createInbox",
+        "tags": [
+          "Inboxes"
+        ],
+        "summary": "Create an inbox"
+      }
+    },
+    "/api/v1/inboxes/{id}": {
+      "get": {
+        "operationId": "getInbox",
+        "tags": [
+          "Inboxes"
+        ],
+        "summary": "Get inbox by id, username, or email",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateInbox",
+        "tags": [
+          "Inboxes"
+        ],
+        "summary": "Set require_sender_auth. true (default) requires DMARC=pass or aligned DKIM=pass before owner or allowlist mail becomes a task. false opts out.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "require_sender_auth": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inboxes/{id}/messages": {
+      "get": {
+        "operationId": "listMessages",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "List messages",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "sendMessage",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Send a message (text, html, attachments)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "to": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "subject": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "html": {
+                    "type": "string"
+                  },
+                  "attachments": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "filename": {
+                          "type": "string"
+                        },
+                        "content_type": {
+                          "type": "string"
+                        },
+                        "content_base64": {
+                          "type": "string"
+                        },
+                        "content_id": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "filename",
+                        "content_base64"
+                      ]
+                    }
+                  },
+                  "client_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "to"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inboxes/{id}/messages/{msgId}": {
+      "get": {
+        "operationId": "getMessage",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Get a message (includes attachment details)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "msgId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/inboxes/{id}/messages/{msgId}/attachments/{attId}": {
+      "get": {
+        "operationId": "downloadAttachment",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Download attachment bytes (Bearer)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "msgId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "attId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/inboxes/{id}/inbound": {
+      "post": {
+        "operationId": "injectInbound",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Inject inbound mail for tests (Bearer)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/search": {
+      "get": {
+        "operationId": "searchMessages",
+        "tags": [
+          "Search"
+        ],
+        "summary": "Full-text search across stored mail",
+        "parameters": [
+          {
+            "name": "q",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/webhooks": {
+      "get": {
+        "operationId": "listWebhooks",
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "List webhooks",
+        "description": "Includes inbox_id, header names with values redacted, last_delivery_status, and last_delivery_at. Secrets are truncated."
+      },
+      "post": {
+        "operationId": "createWebhook",
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Register a webhook (message.received, message.sent, task.received, owner.reply)",
+        "description": "Cooper signs the raw JSON body with HMAC-SHA256. The header x-cooper-signature is sha256=<hex>. Optional headers (max 5, Authorization or X-*) are stored encrypted, redacted on read, and sent on every delivery. Optional inbox_id limits delivery to one inbox. 5xx and network errors are retried.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  },
+                  "events": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "message.received",
+                        "message.sent",
+                        "task.received",
+                        "owner.reply"
+                      ]
+                    }
+                  },
+                  "secret": {
+                    "type": "string"
+                  },
+                  "inbox_id": {
+                    "type": "string",
+                    "description": "Fire only for this inbox. Omit to receive every inbox on the account."
+                  },
+                  "headers": {
+                    "type": "object",
+                    "description": "At most 5 headers. Names must be Authorization or X-* (not x-cooper-signature, x-cooper-event, or x-cooper-delivery). Values max 1024 characters. GET returns the names with values redacted.",
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/webhooks/{id}": {
+      "patch": {
+        "operationId": "updateWebhook",
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Update a webhook",
+        "description": "Partial update. Pass inbox_id null to clear the inbox filter. Pass headers null to remove custom headers.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string"
+                  },
+                  "events": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "message.received",
+                        "message.sent",
+                        "task.received",
+                        "owner.reply"
+                      ]
+                    }
+                  },
+                  "secret": {
+                    "type": "string"
+                  },
+                  "inbox_id": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "headers": {
+                    "type": "object",
+                    "nullable": true,
+                    "additionalProperties": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteWebhook",
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Delete a webhook",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/inboxes/{id}/owners": {
+      "get": {
+        "operationId": "listOwners",
+        "tags": [
+          "Owners"
+        ],
+        "summary": "List human owners",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "addOwner",
+        "tags": [
+          "Owners"
+        ],
+        "summary": "Register a human owner and email a confirmation link",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "digest": {
+                    "type": "string",
+                    "enum": [
+                      "immediate",
+                      "daily"
+                    ]
+                  }
+                },
+                "required": [
+                  "email"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/inboxes/{id}/owners/{ownerId}": {
+      "delete": {
+        "operationId": "deleteOwner",
+        "tags": [
+          "Owners"
+        ],
+        "summary": "Remove an owner",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ownerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateOwner",
+        "tags": [
+          "Owners"
+        ],
+        "summary": "Set digest to immediate or daily",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ownerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/inboxes/{id}/owners/{ownerId}/confirm": {
+      "post": {
+        "operationId": "confirmOwner",
+        "tags": [
+          "Owners"
+        ],
+        "summary": "Confirm an owner with the emailed code",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ownerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/owners/confirm": {
+      "get": {
+        "operationId": "ownerConfirmPage",
+        "tags": [
+          "Owners"
+        ],
+        "summary": "Confirmation page for the link in the email",
+        "security": []
+      },
+      "post": {
+        "operationId": "confirmOwnerPublic",
+        "tags": [
+          "Owners"
+        ],
+        "summary": "Confirm with token or email plus code",
+        "security": []
+      }
+    },
+    "/api/v1/owners/unsubscribe": {
+      "get": {
+        "operationId": "ownerUnsubscribePage",
+        "tags": [
+          "Owners"
+        ],
+        "summary": "Unsubscribe page",
+        "security": []
+      },
+      "post": {
+        "operationId": "unsubscribeOwner",
+        "tags": [
+          "Owners"
+        ],
+        "summary": "One-click List-Unsubscribe",
+        "security": []
+      }
+    },
+    "/api/v1/inboxes/{id}/allowlist": {
+      "get": {
+        "operationId": "listAllowlist",
+        "tags": [
+          "Owners"
+        ],
+        "summary": "List allowlisted senders",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "addAllowlistEntry",
+        "tags": [
+          "Owners"
+        ],
+        "summary": "Allow a sender to create tasks",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/updates": {
+      "get": {
+        "operationId": "listUpdates",
+        "tags": [
+          "Updates"
+        ],
+        "summary": "List owner updates for an inbox",
+        "parameters": [
+          {
+            "name": "inbox_id",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "notifyOwner",
+        "tags": [
+          "Updates"
+        ],
+        "summary": "Send a progress, needs_input, done, or error update to verified owners",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "inbox_id": {
+                    "type": "string"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "progress",
+                      "needs_input",
+                      "done",
+                      "error"
+                    ]
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "task_id": {
+                    "type": "string"
+                  },
+                  "links": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "label": {
+                          "type": "string"
+                        },
+                        "url": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "label",
+                        "url"
+                      ]
+                    }
+                  },
+                  "client_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "inbox_id",
+                  "kind",
+                  "text"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tasks": {
+      "get": {
+        "operationId": "listTasks",
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "List or long-poll tasks from verified owners and allowlisted senders whose mail passed DMARC or aligned DKIM, unless the inbox opted out",
+        "parameters": [
+          {
+            "name": "inbox_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "pending",
+                "in_progress",
+                "done",
+                "all"
+              ]
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "wait",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "description": "Long-poll seconds, maximum 25"
+            }
+          }
+        ]
+      }
+    },
+    "/api/v1/tasks/stream": {
+      "get": {
+        "operationId": "streamTasks",
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Server-sent events for tasks (25 seconds)"
+      }
+    },
+    "/api/v1/tasks/{id}": {
+      "get": {
+        "operationId": "getTask",
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Get one task",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "updateTask",
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Set task status, including done",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "in_progress",
+                      "done"
+                    ]
+                  }
+                },
+                "required": [
+                  "status"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{id}/reply": {
+      "post": {
+        "operationId": "replyTask",
+        "tags": [
+          "Tasks"
+        ],
+        "summary": "Reply in-thread to the human and optionally set status",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  },
+                  "html": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "pending",
+                      "in_progress",
+                      "done"
+                    ]
+                  }
+                },
+                "required": [
+                  "text"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/stats": {
+      "get": {
+        "operationId": "getStats",
+        "tags": [
+          "Inboxes"
+        ],
+        "summary": "Account analytics for the dashboard"
+      }
+    },
+    "/api/v1/billing": {
+      "get": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Plan, usage, limits, and upgrade path"
+      }
+    },
+    "/api/v1/billing/checkout": {
+      "post": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Create a Stripe Checkout session and return its URL",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "plan": {
+                    "enum": [
+                      "starter",
+                      "pro"
+                    ]
+                  },
+                  "success_url": {
+                    "type": "string"
+                  },
+                  "cancel_url": {
+                    "type": "string"
+                  },
+                  "client_id": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "plan"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/billing/portal": {
+      "post": {
+        "tags": [
+          "Billing"
+        ],
+        "summary": "Create a Stripe customer portal session and return its URL"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}

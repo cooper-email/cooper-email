@@ -1,0 +1,41 @@
+{
+  "name": "n8n-nodes-cooper-email",
+  "version": "0.1.0",
+  "description": "n8n community node for Cooper Email — inboxes, send, search, and asking a human over email.",
+  "license": "MIT",
+  "author": "Avatar 8 LLC <ops@avatar33.com>",
+  "homepage": "https://github.com/cooper-email/cooper-email/tree/main/packages/n8n-nodes-cooper-email#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cooper-email/cooper-email.git",
+    "directory": "packages/n8n-nodes-cooper-email"
+  },
+  "keywords": [
+    "n8n-community-node-package",
+    "cooper-email",
+    "n8n"
+  ],
+  "files": [
+    "nodes",
+    "credentials",
+    "README.md"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "credentials/CooperEmailApi.credentials.js"
+    ],
+    "nodes": [
+      "nodes/CooperEmail/CooperEmail.node.js"
+    ]
+  },
+  "peerDependencies": {
+    "n8n-workflow": "*"
+  },
+  "scripts": {
+    "test": "vitest run --config ../../vitest.config.ts test"
+  },
+  "bugs": {
+    "url": "https://github.com/cooper-email/cooper-email/issues"
+  }
+}

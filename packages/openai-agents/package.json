@@ -1,0 +1,59 @@
+{
+  "name": "cooper-email-openai-agents",
+  "version": "0.1.0",
+  "description": "OpenAI Agents SDK tools for Cooper Email (JavaScript).",
+  "license": "MIT",
+  "author": "Avatar 8 LLC <ops@avatar33.com>",
+  "homepage": "https://github.com/cooper-email/cooper-email/tree/main/packages/openai-agents#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cooper-email/cooper-email.git",
+    "directory": "packages/openai-agents"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run --config ../../vitest.config.ts test"
+  },
+  "dependencies": {
+    "cooper-email": "^0.1.0"
+  },
+  "peerDependencies": {
+    "@openai/agents": ">=0.0.1",
+    "zod": ">=3"
+  },
+  "peerDependenciesMeta": {
+    "@openai/agents": {
+      "optional": true
+    },
+    "zod": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.0"
+  },
+  "keywords": [
+    "cooper-email",
+    "openai",
+    "agents"
+  ],
+  "bugs": {
+    "url": "https://github.com/cooper-email/cooper-email/issues"
+  }
+}

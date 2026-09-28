@@ -1,0 +1,19 @@
+{
+  "nodes": [
+    {
+      "name": "Cooper Email",
+      "type": "n8n-nodes-cooper-email.cooperEmail",
+      "parameters": {
+        "operation": "send",
+        "inboxId": "inb_1",
+        "to": "ada@example.com",
+        "subject": "Hello",
+        "text": "Tuesday works.",
+        "clientId": "send-1"
+      },
+      "credentials": {
+        "cooperEmailApi": { "id": "1", "name": "Cooper Email" }
+      }
+    }
+  ]
+}

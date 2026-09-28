@@ -1,0 +1,30 @@
+[project]
+name = "cooper-email-llamaindex"
+version = "0.1.0"
+description = "LlamaIndex ToolSpec for Cooper Email."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "Avatar 8 LLC", email = "ops@avatar33.com" }]
+dependencies = ["cooper-email>=0.1.0"]
+
+[project.optional-dependencies]
+llamaindex = ["llama-index-core"]
+dev = ["pytest>=8"]
+
+[project.urls]
+Homepage = "https://github.com/cooper-email/cooper-email/tree/main/packages/llamaindex"
+Documentation = "https://cooperemail.com/docs"
+Website = "https://cooperemail.com"
+Repository = "https://github.com/cooper-email/cooper-email"
+Issues = "https://github.com/cooper-email/cooper-email/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["cooper_email_llamaindex"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,29 @@
+[project]
+name = "cooper-email-anthropic"
+version = "0.1.0"
+description = "Anthropic tool-use definitions for Cooper Email."
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+authors = [{ name = "Avatar 8 LLC", email = "ops@avatar33.com" }]
+dependencies = ["cooper-email>=0.1.0"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.urls]
+Homepage = "https://github.com/cooper-email/cooper-email/tree/main/packages/anthropic-py"
+Documentation = "https://cooperemail.com/docs"
+Website = "https://cooperemail.com"
+Repository = "https://github.com/cooper-email/cooper-email"
+Issues = "https://github.com/cooper-email/cooper-email/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["cooper_email_anthropic"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

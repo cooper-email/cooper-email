@@ -1,0 +1,26 @@
+{
+  "name": "cooper-email-openapi",
+  "version": "0.1.0",
+  "description": "OpenAPI 3.1 document for Cooper Email. Import into Zapier or Make.",
+  "license": "MIT",
+  "author": "Avatar 8 LLC <ops@avatar33.com>",
+  "homepage": "https://github.com/cooper-email/cooper-email/tree/main/packages/openapi#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cooper-email/cooper-email.git",
+    "directory": "packages/openapi"
+  },
+  "files": [
+    "openapi.json",
+    "README.md"
+  ],
+  "keywords": [
+    "cooper-email",
+    "openapi",
+    "zapier",
+    "make"
+  ],
+  "bugs": {
+    "url": "https://github.com/cooper-email/cooper-email/issues"
+  }
+}
