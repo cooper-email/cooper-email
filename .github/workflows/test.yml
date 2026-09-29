@@ -1,0 +1,47 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  javascript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run build:sdks
+
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install SDKs
+        run: |
+          python -m pip install -U pip
+          pip install -e "packages/cooper-email-python[dev]"
+          pip install --no-deps \
+            -e packages/langchain-py \
+            -e packages/llamaindex \
+            -e packages/crewai \
+            -e packages/openai-agents-py \
+            -e packages/anthropic-py
+      - name: Test Python packages
+        run: |
+          python -m pytest --import-mode=importlib \
+            packages/cooper-email-python \
+            packages/langchain-py \
+            packages/llamaindex \
+            packages/crewai \
+            packages/openai-agents-py \
+            packages/anthropic-py
