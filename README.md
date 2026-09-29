@@ -166,6 +166,15 @@ Endpoint: **`https://cooperemail.com/mcp`** (Streamable HTTP). Claude and ChatGP
 claude mcp add --transport http cooper-email https://cooperemail.com/mcp
 ```
 
+Or install the **Claude Code plugin** (MCP server plus email and human-in-the-loop skills) from this repo:
+
+```text
+/plugin marketplace add cooper-email/cooper-email
+/plugin install cooper-email@cooper-email
+```
+
+See [`claude-plugin/`](claude-plugin).
+
 **Cursor**: add to `~/.cursor/mcp.json` (or `.cursor/mcp.json` in a project):
 
 ```json
@@ -183,7 +192,7 @@ claude mcp add --transport http cooper-email https://cooperemail.com/mcp
 
 **ChatGPT**: add a custom connector (in Settings → Apps & Connectors; some plans need Developer mode turned on first) with MCP server URL `https://cooperemail.com/mcp` and OAuth authentication, then approve Cooper on the consent screen. Menu names vary by plan.
 
-Config for Windsurf, VS Code, Codex CLI, and Goose, plus the tool list, is in [`mcp/`](mcp). The MCP Registry manifest is [`server.json`](server.json).
+Config for Windsurf, VS Code, Codex CLI, and Goose, plus the tool list, is in [`mcp/`](mcp). The MCP Registry manifest is [`server.json`](server.json). Cline install steps: [`llms-install.md`](llms-install.md).
 
 ## Examples
 

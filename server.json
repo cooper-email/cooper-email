@@ -2,17 +2,41 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "com.cooperemail/cooper-email",
   "title": "Cooper Email",
-  "description": "HTTP email inbox for AI agents. Create an inbox, send and receive mail, and search messages.",
-  "version": "1.0.0",
+  "description": "Email inboxes for AI agents: create an address, send, receive via webhook, and full-text search.",
+  "version": "1.0.2",
   "websiteUrl": "https://cooperemail.com",
   "repository": {
     "url": "https://github.com/cooper-email/cooper-email",
     "source": "github"
   },
+  "icons": [
+    {
+      "src": "https://cooperemail.com/cooper-logo-512.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "512x512"
+      ]
+    },
+    {
+      "src": "https://cooperemail.com/icon",
+      "mimeType": "image/png",
+      "sizes": [
+        "256x256"
+      ]
+    }
+  ],
   "remotes": [
     {
       "type": "streamable-http",
-      "url": "https://cooperemail.com/mcp"
+      "url": "https://cooperemail.com/mcp",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Optional. 'Bearer coop_live_…' API key (from cooper_onboard or POST /api/v1/onboard). OAuth 2.1 (PKCE) is also supported via https://cooperemail.com/.well-known/oauth-protected-resource.",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
     }
   ]
 }

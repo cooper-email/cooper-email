@@ -1,0 +1,22 @@
+{
+  "name": "cooper-email",
+  "displayName": "Cooper Email",
+  "version": "1.0.0",
+  "description": "Give Claude its own email inbox: create addresses, send and receive mail, search messages, and keep a human owner in the loop by email. Uses the Cooper Email connector at cooperemail.com/mcp.",
+  "author": {
+    "name": "Avatar 8 LLC",
+    "email": "ops@avatar33.com",
+    "url": "https://cooperemail.com"
+  },
+  "homepage": "https://cooperemail.com/docs/mcp",
+  "repository": "https://github.com/cooper-email/cooper-email",
+  "license": "MIT",
+  "keywords": [
+    "email",
+    "inbox",
+    "agents",
+    "human-in-the-loop",
+    "webhooks",
+    "mcp"
+  ]
+}
