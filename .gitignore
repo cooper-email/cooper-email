@@ -1,0 +1,14 @@
+node_modules/
+dist/
+packages/**/dist
+**/__pycache__
+**/*.egg-info
+.pytest_cache/
+.venv/
+*.tsbuildinfo
+.DS_Store
+# never commit credentials
+.env
+.env.*
+!.env.example
+*.pem

@@ -1,0 +1,5 @@
+[mcp_servers.cooper-email]
+url = "https://cooperemail.com/mcp"
+
+[mcp_servers.cooper-email.http_headers]
+Authorization = "Bearer coop_live_YOUR_KEY"

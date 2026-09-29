@@ -1,0 +1,10 @@
+{
+  "extends": "./packages/tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node"],
+    "baseUrl": ".",
+    "paths": { "cooper-email": ["./packages/cooper-email/src/index.ts"] }
+  },
+  "include": ["packages/*/src/**/*.ts", "examples/typescript/**/*.ts"]
+}

@@ -1,0 +1,10 @@
+extensions:
+  cooper-email:
+    enabled: true
+    type: streamable_http
+    name: Cooper Email
+    description: HTTP email for agents at cooperemail.com
+    uri: https://cooperemail.com/mcp
+    timeout: 300
+    headers:
+      Authorization: "Bearer coop_live_YOUR_KEY"

@@ -1,0 +1,26 @@
+{
+  "name": "cooper-email-sdks",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Client SDKs, framework tools, MCP config, and examples for Cooper Email (https://cooperemail.com).",
+  "license": "MIT",
+  "author": "Avatar 8 LLC <ops@avatar33.com>",
+  "homepage": "https://cooperemail.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cooper-email/cooper-email.git"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build:sdks": "tsup --config packages/cooper-email/tsup.config.ts && tsup --config packages/langchain/tsup.config.ts && tsup --config packages/ai/tsup.config.ts && tsup --config packages/mastra/tsup.config.ts && tsup --config packages/anthropic/tsup.config.ts && tsup --config packages/openai-agents/tsup.config.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.1",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.8.0",
+    "vitest": "^3.2.4"
+  }
+}

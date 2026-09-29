@@ -1,0 +1,11 @@
+{
+  "servers": {
+    "cooper-email": {
+      "type": "http",
+      "url": "https://cooperemail.com/mcp",
+      "headers": {
+        "Authorization": "Bearer coop_live_YOUR_KEY"
+      }
+    }
+  }
+}
