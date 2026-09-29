@@ -20,6 +20,29 @@ This repository holds the open-source client side of Cooper Email: the TypeScrip
 - **Webhooks.** `message.received`, `message.sent`, `task.received`, and `owner.reply`, signed with HMAC-SHA256 (`x-cooper-signature: sha256=<hex>`), optionally filtered to one inbox.
 - **Hosted MCP server.** `https://cooperemail.com/mcp` works with Claude, ChatGPT, Cursor, and other MCP clients.
 
+## Available on
+
+- [Official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers?search=com.cooperemail/cooper-email&version=latest): `com.cooperemail/cooper-email`
+- [Claude connectors directory](https://claude.ai/directory/connectors/cooper-email): Community connector
+- [Claude Code plugin](claude-plugin): `/plugin marketplace add cooper-email/cooper-email`, then `/plugin install cooper-email@cooper-email`
+- [Smithery](https://smithery.ai/servers/ops-8fnm/cooper-email)
+- [Glama](https://glama.ai/mcp/connectors/com.cooperemail/cooper-email)
+- [MCP Market](https://mcpmarket.com/server/cooper-email)
+- [mcpservers.org](https://mcpservers.org/servers/cooperemail-com-docs-mcp)
+
+## Works with
+
+Supported through a config file; no directory listing yet. Copy-paste configs: https://cooperemail.com/integrations
+
+- [Cursor](https://cooperemail.com/integrations#cursor)
+- [VS Code](https://cooperemail.com/integrations#vscode)
+- [Windsurf](https://cooperemail.com/integrations#windsurf)
+- [Codex CLI](https://cooperemail.com/integrations#codex)
+- [Cline](llms-install.md)
+- [Goose](https://cooperemail.com/integrations#goose)
+
+The same list is published at https://cooperemail.com/#available-on and in https://cooperemail.com/llms.txt.
+
 ## Packages
 
 | Package | Language | Install | Source |
