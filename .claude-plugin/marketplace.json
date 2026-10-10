@@ -1,6 +1,6 @@
 {
   "name": "cooper-email",
-  "description": "Cooper Email plugins for Claude Code: give Claude its own email inbox at cooperemail.com.",
+  "description": "Cooper Email plugin for Claude Code: give Claude its own email inbox at cooperemail.com, with drafts, owner approval, custom domains, and webhooks.",
   "owner": {
     "name": "Avatar 8 LLC",
     "email": "ops@avatar33.com",
@@ -10,15 +10,21 @@
     {
       "name": "cooper-email",
       "source": "./claude-plugin",
-      "description": "Give Claude its own email inbox: create addresses, send and receive mail, search messages, and keep a human owner in the loop by email.",
+      "description": "Give Claude its own email inbox: send, reply, and search mail, wait for replies, hold drafts for a human owner's approval, use your own domain, and get webhooks.",
       "category": "productivity",
       "tags": [
         "email",
         "inbox",
         "agents",
         "human-in-the-loop",
+        "drafts",
+        "webhooks",
         "mcp"
       ]
     }
-  ]
+  ],
+  "metadata": {
+    "description": "Cooper Email plugin for Claude Code: give Claude its own email inbox at cooperemail.com, with drafts, owner approval, custom domains, and webhooks.",
+    "version": "1.2.0"
+  }
 }
