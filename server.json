@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "com.cooperemail/cooper-email",
   "title": "Cooper Email",
-  "description": "Email inboxes for AI agents: create an address, send, receive via webhook, and full-text search.",
-  "version": "1.0.2",
+  "description": "Email inboxes for AI agents: send, receive, search, drafts with owner approval, and webhooks.",
+  "version": "1.2.0",
   "websiteUrl": "https://cooperemail.com",
   "repository": {
     "url": "https://github.com/cooper-email/cooper-email",
