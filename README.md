@@ -43,11 +43,52 @@ Supported through a config file; no directory listing yet. Copy-paste configs: h
 
 The same list is published at https://cooperemail.com/#available-on and in https://cooperemail.com/llms.txt.
 
+## One-command agent setup
+
+```bash
+npx cooper-email setup
+```
+
+`setup` finds the coding agents installed for your user, shows every file it will change, and asks before writing. It backs up each existing config next to itself (`<file>.cooper-email.bak`), registers the hosted MCP server `https://cooperemail.com/mcp` in each agent's own format, and installs the [Cooper Email skill](skills/cooper-email/SKILL.md). With no key yet it can create a free inbox and API key for you through `POST /api/v1/onboard`.
+
+| Agent | `--agent` | Config file setup edits |
+| --- | --- | --- |
+| Claude Code | `claude-code` | `~/.claude.json` (`mcpServers`, `type: "http"`) |
+| Codex | `codex` | `~/.codex/config.toml` (`[mcp_servers.cooper-email]`) |
+| Cursor | `cursor` | `~/.cursor/mcp.json` |
+| Gemini CLI | `gemini` | `~/.gemini/settings.json` (`httpUrl`) |
+| Grok Build | `grok` | `~/.grok/config.toml` |
+| VS Code | `vscode` | user `mcp.json` (`servers`, `type: "http"`) |
+| Windsurf | `windsurf` | `~/.codeium/windsurf/mcp_config.json` (`serverUrl`) |
+| Devin Desktop (Cascade) | `devin` | `~/.config/devin/mcp_config.json` (`serverUrl`) |
+| OpenCode | `opencode` | `~/.config/opencode/opencode.json` (`mcp`, `type: "remote"`) |
+| GitHub Copilot CLI | `copilot` | `~/.copilot/mcp-config.json` |
+| Claude Desktop | `claude-desktop` | `claude_desktop_config.json` (through `mcp-remote`) |
+
+The skill goes to `~/.agents/skills/cooper-email/` (the shared skills folder) and, for Claude Code, `~/.claude/skills/cooper-email/`.
+
+```bash
+npx cooper-email setup --username my-agent        # create my-agent@cooperemail.com and a key
+npx cooper-email setup --api-key "$COOPER_API_KEY" # use a key you already have (or set COOPER_API_KEY)
+npx cooper-email setup --oauth                    # no key; each agent signs in with OAuth
+npx cooper-email setup --agent codex,cursor --dry-run
+npx cooper-email doctor     # checks configs, the key, and a live MCP initialize + tools/list
+npx cooper-email uninstall  # removes only what setup added; backups and your inbox stay
+```
+
+Without a terminal, `setup` and `uninstall` print the plan and change nothing unless you pass `--yes`. A new key is saved with mode 600 at `~/.config/cooper-email/credentials.json`, and the agent configs hold it as an `Authorization` header, so keep those files private.
+
+Install only the skill with the [skills](https://skills.sh) CLI:
+
+```bash
+npx skills add cooper-email/cooper-email --skill cooper-email
+```
+
 ## Packages
 
 | Package | Language | Install | Source |
 | --- | --- | --- | --- |
-| `cooper-email` | TypeScript / JavaScript | `npm install cooper-email` | [`packages/cooper-email`](packages/cooper-email) |
+| `cooper-email` | TypeScript / JavaScript SDK and `npx cooper-email setup` CLI | `npm install cooper-email` | [`packages/cooper-email`](packages/cooper-email) |
 | `cooper-email` | Python | `pip install cooper-email` | [`packages/cooper-email-python`](packages/cooper-email-python) |
 | `cooper-email-langchain` | TypeScript | `npm install cooper-email-langchain` | [`packages/langchain`](packages/langchain) |
 | `cooper-email-langchain` | Python | `pip install cooper-email-langchain` | [`packages/langchain-py`](packages/langchain-py) |
@@ -178,6 +219,8 @@ const ok = verifyWebhookSignature({
 Python: `from cooper_email import verify_webhook_signature`. Event bodies look like `{ "id", "type", "created_at", "data" }`.
 
 ## Connect the hosted MCP server
+
+The quickest way is `npx cooper-email setup` ([above](#one-command-agent-setup)). To configure a client by hand:
 
 Endpoint: **`https://cooperemail.com/mcp`** (Streamable HTTP). Claude and ChatGPT connectors sign in with OAuth. Cursor, Claude Code, and scripts can send `Authorization: Bearer coop_live_…`. The `cooper_onboard` tool works before you have a key.
 
