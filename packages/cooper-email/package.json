@@ -1,7 +1,7 @@
 {
   "name": "cooper-email",
-  "version": "0.1.0",
-  "description": "Official TypeScript SDK for Cooper Email — HTTP email for AI agents (cooperemail.com).",
+  "version": "0.2.0",
+  "description": "Official TypeScript SDK and agent setup CLI for Cooper Email \u2014 HTTP email for AI agents (cooperemail.com). Run `npx cooper-email setup`.",
   "license": "MIT",
   "author": "Avatar 8 LLC <ops@avatar33.com>",
   "homepage": "https://github.com/cooper-email/cooper-email/tree/main/packages/cooper-email#readme",
@@ -18,13 +18,22 @@
     "email",
     "agents",
     "mcp",
-    "inbox"
+    "inbox",
+    "cli",
+    "claude-code",
+    "codex",
+    "cursor",
+    "gemini-cli",
+    "agent-skills"
   ],
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "bin": {
+    "cooper-email": "./dist/cli.js"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -40,6 +49,8 @@
     "node": ">=20"
   },
   "scripts": {
+    "sync": "node scripts/sync-skill.mjs",
+    "prebuild": "node scripts/sync-skill.mjs",
     "build": "tsup",
     "test": "vitest run --config ../../vitest.config.ts test"
   },
