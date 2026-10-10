@@ -84,6 +84,15 @@ Install only the skill with the [skills](https://skills.sh) CLI:
 npx skills add cooper-email/cooper-email --skill cooper-email
 ```
 
+Focused skills in [`skills/`](skills), each installable on its own:
+
+| Skill | Use it when | Install |
+| --- | --- | --- |
+| [`cooper-email`](skills/cooper-email/SKILL.md) | General: the agent needs its own inbox and the full tool list | `npx skills add cooper-email/cooper-email --skill cooper-email` |
+| [`cooper-agent-inbox`](skills/cooper-agent-inbox/SKILL.md) | Inbox basics: create, send, read unread, reply, wait for mail | `npx skills add cooper-email/cooper-email --skill cooper-agent-inbox` |
+| [`cooper-agent-signup-otp`](skills/cooper-agent-signup-otp/SKILL.md) | Sign up or log in somewhere and read back the emailed verification code | `npx skills add cooper-email/cooper-email --skill cooper-agent-signup-otp` |
+| [`cooper-owner-approval`](skills/cooper-owner-approval/SKILL.md) | A human approves each outgoing email (drafts and approval mode) | `npx skills add cooper-email/cooper-email --skill cooper-owner-approval` |
+
 ## Packages
 
 | Package | Language | Install | Source |
