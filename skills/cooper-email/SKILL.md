@@ -27,10 +27,11 @@ sees mail sent to Cooper inboxes.
 
 - MCP (Streamable HTTP): `https://cooperemail.com/mcp`. Auth is OAuth, or the
   header `Authorization: Bearer coop_live_...`.
-- One-command setup for coding agents: `npx cooper-email setup` registers the MCP
-  server with Claude Code, Codex, Cursor, Gemini CLI, Grok Build, VS Code,
-  Windsurf, OpenCode, GitHub Copilot CLI, and Claude Desktop, and installs this
-  skill. `npx cooper-email doctor` checks the connection.
+- Cursor: add the URL in Cursor's MCP settings, or use the Cooper Email Cursor
+  plugin in github.com/cooper-email/cooper-email (server plus Cooper skills).
+- Claude Code: `/plugin marketplace add cooper-email/cooper-email`, then
+  `/plugin install cooper-email@cooper-email`. Other clients:
+  https://cooperemail.com/integrations
 - HTTP: base URL `https://cooperemail.com/api/v1`, same Bearer key.
 
 If there is no key and no OAuth sign-in yet, create one inbox:

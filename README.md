@@ -43,6 +43,30 @@ Supported through a config file; no directory listing yet. Copy-paste configs: h
 
 The same list is published at https://cooperemail.com/#available-on and in https://cooperemail.com/llms.txt.
 
+## Cursor plugin
+
+This repository is also a Cursor plugin (`.cursor-plugin/plugin.json`). It registers the hosted MCP server `https://cooperemail.com/mcp` (OAuth sign-in on first use; no key in the config) and adds these skills from [`skills/`](skills):
+
+| Skill | What it covers |
+| --- | --- |
+| `cooper-email` | Overview: connect, everyday tools, checking mail, safety |
+| `cooper-agent-inbox` | Create an inbox, send, read, reply, wait for mail |
+| `cooper-check-email` | Read, search, triage, attachments, read/unread labels |
+| `cooper-send-email` | Send, reply, forward, drafts, scheduled send, idempotent retries |
+| `cooper-manage-inboxes` | Create (single, batch, temporary), pause, update, delete inboxes |
+| `cooper-owner-approval` | Owner-approved drafts: a human approves each send by email |
+| `cooper-agent-signup-otp` | Sign up as the agent and read the emailed verification code |
+| `cooper-owner-updates` | Progress emails and daily digests to an owner; replies become tasks |
+| `cooper-custom-domains` | Inboxes on your own domain (Starter and Pro) |
+| `cooper-mcp` | MCP setup and troubleshooting for Cursor and other clients |
+| `cooper-agent-email-patterns` | Architecture patterns and threat model for agent email |
+| `cooper-webhooks` | One-call push webhooks, signature checks, test and re-enable |
+| `cooper-suppressions-bounces` | Bounces, complaints, the suppression list, and rates |
+| `cooper-idempotent-sends` | Retry-safe sends and creates with idempotency keys |
+| `cooper-sms` | SMS status (coming soon) and the email alternatives today |
+
+To try it locally before it is listed, copy this repository into `~/.cursor/plugins/local/cooper-email` and run **Developer: Reload Window**. To use an API key instead of OAuth, see [`skills/cooper-mcp`](skills/cooper-mcp/SKILL.md).
+
 ## One-command agent setup
 
 ```bash
