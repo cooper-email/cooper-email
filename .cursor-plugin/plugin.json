@@ -1,0 +1,38 @@
+{
+  "name": "cooper-email",
+  "displayName": "Cooper Email",
+  "version": "1.4.0",
+  "description": "Email inboxes for AI agents with a human in the loop: owner-approved drafts, built-in verification-code reading, owner updates and email tasks, custom domains from the $12 Starter plan, and 5 free inboxes with 5,000 emails a month. Create inboxes, send, receive, search, and get webhooks in one call.",
+  "author": {
+    "name": "Avatar 8 LLC",
+    "email": "ops@avatar33.com"
+  },
+  "publisher": "Avatar 8 LLC",
+  "homepage": "https://cooperemail.com/docs/mcp",
+  "repository": "https://github.com/cooper-email/cooper-email",
+  "license": "MIT",
+  "category": "Inbox and Collaboration",
+  "keywords": [
+    "email",
+    "inbox",
+    "mcp",
+    "ai-agent",
+    "email-api",
+    "otp",
+    "verification-code",
+    "human-in-the-loop",
+    "owner-approval",
+    "drafts",
+    "custom-domains",
+    "webhooks"
+  ],
+  "tags": [
+    "email",
+    "inbox",
+    "agents",
+    "mcp"
+  ],
+  "logo": "./assets/logo.svg",
+  "skills": "./skills/",
+  "mcpServers": "./mcp.json"
+}

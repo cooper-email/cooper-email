@@ -10,17 +10,9 @@ npm install cooper-email
 
 Node 20 or newer. The package (SDK and CLI) uses `fetch` and has no runtime dependencies.
 
-## Agent setup CLI
+## Connect an agent
 
-The package also ships a `cooper-email` command that connects coding agents (Claude Code, Codex, Cursor, Gemini CLI, Grok Build, VS Code, Windsurf, Devin Desktop, OpenCode, GitHub Copilot CLI, Claude Desktop) to the hosted MCP server and installs the Cooper skill:
-
-```bash
-npx cooper-email setup     # detect agents, show the plan, ask, back up, write
-npx cooper-email doctor    # check configs, the API key, and a live MCP connection
-npx cooper-email uninstall # remove what setup added
-```
-
-Run `npx cooper-email --help` for every option. See the [repository README](https://github.com/cooper-email/cooper-email#one-command-agent-setup) for the config paths.
+This package is not published on npm yet. Connect the hosted MCP server at `https://cooperemail.com/mcp` and install a skill from [`skills/`](https://github.com/cooper-email/cooper-email/tree/main/skills). See the [repository README](https://github.com/cooper-email/cooper-email#connect-an-agent).
 
 ## Quick start
 
