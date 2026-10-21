@@ -1,7 +1,7 @@
 {
   "name": "cooper-email",
   "displayName": "Cooper Email",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Give Claude its own email inbox: create addresses, send, reply, and search mail, wait for replies, schedule drafts or hold them for a human owner's approval, use your own domain, and get webhooks. Uses the Cooper Email connector at cooperemail.com/mcp.",
   "author": {
     "name": "Avatar 8 LLC",
@@ -9,6 +9,7 @@
     "url": "https://cooperemail.com"
   },
   "homepage": "https://cooperemail.com/docs/mcp",
+  "privacyPolicyUrl": "https://cooperemail.com/privacy",
   "repository": "https://github.com/cooper-email/cooper-email",
   "license": "MIT",
   "keywords": [
