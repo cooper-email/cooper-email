@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
+  - package-ecosystem: pip
+    directories:
+      - /packages/cooper-email-python
+      - /packages/langchain-py
+      - /packages/llamaindex
+      - /packages/crewai
+      - /packages/openai-agents-py
+      - /packages/anthropic-py
+    schedule:
+      interval: weekly
+    open-pull-requests-limit: 5
