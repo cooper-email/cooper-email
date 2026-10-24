@@ -9,8 +9,8 @@ jobs:
   npm:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           registry-url: https://registry.npmjs.org
@@ -36,8 +36,8 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
       - name: Build sdists and wheels
@@ -50,32 +50,32 @@ jobs:
           python -m build packages/openai-agents-py
           python -m build packages/anthropic-py
       - name: Publish cooper-email
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
           packages-dir: packages/cooper-email-python/dist
       - name: Publish cooper-email-langchain
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
           packages-dir: packages/langchain-py/dist
       - name: Publish cooper-email-llamaindex
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
           packages-dir: packages/llamaindex/dist
       - name: Publish cooper-email-crewai
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
           packages-dir: packages/crewai/dist
       - name: Publish cooper-email-openai-agents
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
           packages-dir: packages/openai-agents-py/dist
       - name: Publish cooper-email-anthropic
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
           packages-dir: packages/anthropic-py/dist
