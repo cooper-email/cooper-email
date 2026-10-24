@@ -17,7 +17,7 @@
     "build:sdks": "tsup --config packages/cooper-email/tsup.config.ts && tsup --config packages/langchain/tsup.config.ts && tsup --config packages/ai/tsup.config.ts && tsup --config packages/mastra/tsup.config.ts && tsup --config packages/anthropic/tsup.config.ts && tsup --config packages/openai-agents/tsup.config.ts"
   },
   "devDependencies": {
-    "@types/node": "^22.20.1",
+    "@types/node": "^26.6.5",
     "smol-toml": "^1.9.1",
     "tsup": "^8.5.0",
     "tsx": "^4.20.5",
