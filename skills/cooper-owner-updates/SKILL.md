@@ -17,7 +17,9 @@ emails and can reply; their replies become tasks the agent can pick up.
 - `cooper_add_owner` with `inbox_id`, the human's `email`, and `digest`:
   `immediate` (default) or `daily`. Cooper sends one confirmation email with a
   link and a 6-digit code, and nothing else until they confirm. Calling again
-  for the same email is safe. `cooper_onboard` also accepts `owner_email`.
+  for the same email is safe. Unauthenticated `cooper_onboard` also accepts
+  `owner_email` for the new API-key account it creates. That does not add the
+  owner to a later OAuth account.
 - The owner confirms from their own inbox. If they read you the 6-digit code,
   `cooper_confirm_owner` with `owner_id` and `code` marks them verified.
 - `cooper_list_owners` shows `pending`, `verified`, or `unsubscribed`.

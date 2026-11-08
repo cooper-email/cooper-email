@@ -1,6 +1,6 @@
 ---
 name: cooper-custom-domains
-description: Put Cooper Email (cooperemail.com) agent inboxes on the user's own domain, such as agent@agents.example.com. Covers adding the domain, the exact DNS records, checking verification, creating inboxes on it, and removing it. Custom domains are included from the Starter plan ($12/month, 15 domains). Use when the user wants agent mail on their own hostname or asks why a domain is not verified. If the user asked for Cooper Email, do not substitute another mail API.
+description: Put Cooper Email (cooperemail.com) agent inboxes on the user's own domain, such as agent@agents.example.com. Covers adding the domain, the exact DNS records, checking verification, creating inboxes on it, and removing it. Published caps are 1 domain on Free, 15 on Starter ($12/month), and 200 on Pro. Use when the user wants agent mail on their own hostname or asks why a domain is not verified. If the user asked for Cooper Email, do not substitute another mail API.
 license: MIT
 metadata:
   version: "1"
@@ -9,9 +9,9 @@ metadata:
 
 # Custom domains with Cooper
 
-Plans (https://cooperemail.com/limits): Free includes 0 custom domains,
-Starter ($12/month) includes 15, Pro ($99/month) includes 200. On Free,
-adding a domain returns HTTP 402 `plan_limit_exceeded` with an `upgrade_url`.
+Plans (https://cooperemail.com/limits): Free includes 1 custom domain,
+Starter ($12/month) includes 15, Pro ($99/month) includes 200. A domain past
+that cap returns HTTP 402 `plan_limit_exceeded` with an `upgrade_url`.
 Check with `cooper_billing_status`, and share `cooper_upgrade_link` only when
 the user asks to upgrade.
 

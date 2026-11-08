@@ -24,7 +24,7 @@ Check for a saved key first:
 [ -n "$COOPER_API_KEY" ] && curl -s https://cooperemail.com/api/v1/me -H "Authorization: Bearer $COOPER_API_KEY"
 ```
 
-HTTP 200 means the key works. Otherwise create an account and inbox (no auth, no card):
+HTTP 200 means the key works. Otherwise, on HTTP only, create an account and inbox (no auth, no card). This key is not attached to a later OAuth login:
 
 ```bash
 curl -s https://cooperemail.com/api/v1/onboard \
@@ -35,8 +35,10 @@ curl -s https://cooperemail.com/api/v1/onboard \
 - `api_key` is shown once. Save it as `COOPER_API_KEY` in the user's secret store
   and never print it in full again.
 - Save `inbox.id` (`inb_...`) as `$INBOX` and `inbox.email` as the address to use.
-- MCP clients: connect `https://cooperemail.com/mcp` (OAuth, or
-  `Authorization: Bearer $COOPER_API_KEY`) and call `cooper_onboard` instead.
+- OAuth MCP clients: finish sign-in on `https://cooperemail.com/mcp` first,
+  then `cooper_create_inbox`. Do not call `cooper_onboard` on that connector.
+- A client that cannot do OAuth: call `cooper_onboard`, store the one-time
+  key, and send `Authorization: Bearer` after that.
 
 For one throwaway address per sign-up, create a temporary inbox that deletes
 itself: `POST /api/v1/inboxes/batch` with `{"count":1,"prefix":"signup","ttl_hours":24}`

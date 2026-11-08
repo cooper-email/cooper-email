@@ -25,25 +25,30 @@ sees mail sent to Cooper inboxes.
 
 ## Connect
 
-- MCP (Streamable HTTP): `https://cooperemail.com/mcp`. Auth is OAuth, or the
-  header `Authorization: Bearer coop_live_...`.
-- Cursor: add the URL in Cursor's MCP settings, or use the Cooper Email Cursor
-  plugin in github.com/cooper-email/cooper-email (server plus Cooper skills).
+- MCP (Streamable HTTP): `https://cooperemail.com/mcp`.
+- Cursor: use the Cooper Email plugin in github.com/cooper-email/cooper-email
+  (hosted server plus these skills). The plugin file has no API key.
 - Claude Code: `/plugin marketplace add cooper-email/cooper-email`, then
   `/plugin install cooper-email@cooper-email`. Other clients:
   https://cooperemail.com/integrations
-- HTTP: base URL `https://cooperemail.com/api/v1`, same Bearer key.
+- HTTP: base URL `https://cooperemail.com/api/v1`.
 
-If there is no key and no OAuth sign-in yet, create one inbox:
+Where the client supports OAuth (Cursor plugin, Claude, Claude Code, ChatGPT,
+Grok Bot), finish OAuth before creating an inbox. Then call
+`cooper_create_inbox` with a short `username`. That inbox belongs to the
+signed-in account.
 
-- MCP: call `cooper_onboard` with a short `username`.
-- HTTP: `POST https://cooperemail.com/api/v1/onboard` with `{"username":"<short-slug>"}`.
-  No auth is needed.
+`cooper_onboard` is the unauthenticated HTTP and no-OAuth path. It returns
+`api_key` once, for a new account. Store it where the user keeps secrets
+(an environment variable such as `COOPER_API_KEY`) and send
+`Authorization: Bearer` on later calls. Never print it in full again or write
+it into chat, logs, commits, or email. That key is not attached when the user
+later approves OAuth, and the OAuth inbox can be a different address. Do not
+call `cooper_onboard` to finish an OAuth connector.
 
-The response contains `api_key`. It is shown once. Store it where the user
-keeps secrets (an environment variable such as `COOPER_API_KEY`), and never
-print it in full again or write it into chat, logs, commits, or email.
-Check a name first with `GET /api/v1/usernames/check?name=<name>`.
+HTTP: `POST https://cooperemail.com/api/v1/onboard` with `{"username":"<short-slug>"}`.
+No auth is needed on that call. Check a name first with
+`GET /api/v1/usernames/check?name=<name>`.
 
 ## Everyday tools
 

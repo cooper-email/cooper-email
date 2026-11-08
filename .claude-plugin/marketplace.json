@@ -25,6 +25,6 @@
   ],
   "metadata": {
     "description": "Cooper Email plugin for Claude Code: give Claude its own email inbox at cooperemail.com, with drafts, owner approval, custom domains, and webhooks.",
-    "version": "1.2.0"
+    "version": "1.2.2"
   }
 }

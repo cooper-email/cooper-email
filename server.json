@@ -3,7 +3,7 @@
   "name": "com.cooperemail/cooper-email",
   "title": "Cooper Email",
   "description": "Email inboxes for AI agents: send, receive, search, drafts with owner approval, and webhooks.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "websiteUrl": "https://cooperemail.com",
   "repository": {
     "url": "https://github.com/cooper-email/cooper-email",
@@ -32,7 +32,7 @@
       "headers": [
         {
           "name": "Authorization",
-          "description": "Optional. 'Bearer coop_live_…' API key (from cooper_onboard or POST /api/v1/onboard). OAuth 2.1 (PKCE) is also supported via https://cooperemail.com/.well-known/oauth-protected-resource.",
+          "description": "Optional. Bearer coop_live_ API key from unauthenticated cooper_onboard or POST /api/v1/onboard. That key is not attached to a later OAuth login. OAuth 2.1 (PKCE) uses the signed-in account, which can be a different inbox. Discovery: https://cooperemail.com/.well-known/oauth-protected-resource.",
           "isRequired": false,
           "isSecret": true
         }

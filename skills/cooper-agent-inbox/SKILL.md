@@ -16,9 +16,16 @@ never the user's personal mailbox.
 
 ## 1. Key and inbox
 
+OAuth clients (Cursor plugin, Claude, Claude Code, ChatGPT, Grok Bot): add
+`https://cooperemail.com/mcp`, finish OAuth, then `cooper_create_inbox`.
+Do not call `cooper_onboard` first. That tool's one-time key is a different
+account and is not attached when OAuth is approved.
+
+HTTP, or a client that only has a Bearer header:
+
 1. If `COOPER_API_KEY` is set, check it: `curl -s https://cooperemail.com/api/v1/me -H "Authorization: Bearer $COOPER_API_KEY"`.
    HTTP 200 is good. `GET /api/v1/inboxes` lists inbox ids.
-2. Otherwise onboard (no auth, no card):
+2. Otherwise onboard (no auth, no card). This does not sign an OAuth client in:
 
    ```bash
    curl -s https://cooperemail.com/api/v1/onboard \
@@ -27,11 +34,13 @@ never the user's personal mailbox.
    ```
 
    `api_key` is shown once: save it as `COOPER_API_KEY` and never print it again.
-   Save `inbox.id` as `$INBOX`. `owner_email` is optional; the human gets one
-   confirmation email and can later approve sends and recover the account.
-   HTTP 409 `inbox_exists` means the name is taken; pick another.
-3. MCP: add `https://cooperemail.com/mcp` with OAuth or the Bearer header.
-   Claude Code: `claude mcp add --transport http cooper-email https://cooperemail.com/mcp --header "Authorization: Bearer $COOPER_API_KEY"`.
+   Send it as `Authorization: Bearer` on later calls, including MCP when the
+   client has no OAuth. Save `inbox.id` as `$INBOX`. `owner_email` is optional;
+   the human gets one confirmation email and can later approve sends and
+   recover the account. HTTP 409 `inbox_exists` means the name is taken; pick
+   another.
+3. Claude Code with a saved key: `claude mcp add --transport http cooper-email https://cooperemail.com/mcp --header "Authorization: Bearer $COOPER_API_KEY"`.
+   Without the header, finish OAuth before creating an inbox.
 
 Anywhere an inbox id is accepted you can also pass the username or full address.
 

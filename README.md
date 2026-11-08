@@ -9,12 +9,14 @@
 - Pricing: https://cooperemail.com/pricing
 - API reference (OpenAPI 3.1): https://cooperemail.com/openapi.json
 - For LLMs: https://cooperemail.com/llms.txt
+- Privacy policy: https://cooperemail.com/privacy
+- Terms of service: https://cooperemail.com/terms
 
 This repository holds the open-source client side of Cooper Email: the TypeScript and Python SDKs, framework tool packages, MCP client config, and examples. The hosted service itself is not in this repo.
 
 ## What you get
 
-- **Inboxes for agents.** One API call creates an account, an inbox (`your-agent@cooperemail.com`), and an API key. No dashboard needed.
+- **Inboxes for agents.** On the HTTP API, one unauthenticated call creates an account, an inbox (`your-agent@cooperemail.com`), and an API key. OAuth clients should finish sign-in first and create the inbox on that account. The key from the unauthenticated call is not attached to OAuth.
 - **Send and receive.** Text, HTML, attachments, threads, search, and idempotent sends via `client_id`.
 - **Human-in-the-loop tasks.** Add an owner (they confirm by email), send `progress` / `needs_input` / `done` / `error` updates, and receive their replies as tasks you can long-poll and answer in-thread. Replies carry SPF/DKIM/DMARC results and a `verified_owner` flag.
 - **Webhooks.** `message.received`, `message.sent`, `task.received`, and `owner.reply`, signed with HMAC-SHA256 (`x-cooper-signature: sha256=<hex>`), optionally filtered to one inbox.
@@ -45,7 +47,7 @@ The same list is published at https://cooperemail.com/#available-on and in https
 
 ## Cursor plugin
 
-This repository is also a Cursor plugin (`.cursor-plugin/plugin.json`). It registers the hosted MCP server `https://cooperemail.com/mcp` (OAuth sign-in on first use; no key in the config) and adds these skills from [`skills/`](skills):
+This repository is also a Cursor plugin (`.cursor-plugin/plugin.json`, version 1.4.1). It registers the hosted MCP server `https://cooperemail.com/mcp` with no API key in the config, and adds these skills from [`skills/`](skills):
 
 | Skill | What it covers |
 | --- | --- |
@@ -57,15 +59,36 @@ This repository is also a Cursor plugin (`.cursor-plugin/plugin.json`). It regis
 | `cooper-owner-approval` | Owner-approved drafts: a human approves each send by email |
 | `cooper-agent-signup-otp` | Sign up as the agent and read the emailed verification code |
 | `cooper-owner-updates` | Progress emails and daily digests to an owner; replies become tasks |
-| `cooper-custom-domains` | Inboxes on your own domain (Starter and Pro) |
+| `cooper-custom-domains` | Inboxes on your own domain (1 on Free; more on Starter and Pro) |
 | `cooper-mcp` | MCP setup and troubleshooting for Cursor and other clients |
 | `cooper-agent-email-patterns` | Architecture patterns and threat model for agent email |
 | `cooper-webhooks` | One-call push webhooks, signature checks, test and re-enable |
 | `cooper-suppressions-bounces` | Bounces, complaints, the suppression list, and rates |
 | `cooper-idempotent-sends` | Retry-safe sends and creates with idempotency keys |
-| `cooper-sms` | SMS status (coming soon) and the email alternatives today |
+| `cooper-sms` | Inbound SMS on Starter and Pro; outbound send is not registered |
 
-To try it locally before it is listed, copy this repository into `~/.cursor/plugins/local/cooper-email` and run **Developer: Reload Window**. To use an API key instead of OAuth, see [`skills/cooper-mcp`](skills/cooper-mcp/SKILL.md).
+To try it locally before it is listed, copy this repository into `~/.cursor/plugins/local/cooper-email` and run **Developer: Reload Window**.
+
+Finish OAuth in Cursor before creating an inbox, then create it on the signed-in account (`cooper_create_inbox`, or the create option on Cooper's consent screen). `cooper_onboard` with no credentials returns a one-time API key for a separate account. That key is not applied when you later approve OAuth, and the signed-in tools can show a different inbox. The first inbox stays reachable only with `Authorization: Bearer` and the saved key. To use a key instead of OAuth, see [`skills/cooper-mcp`](skills/cooper-mcp/SKILL.md).
+
+### Marketplace review
+
+The plugin is free to install under the MIT license. The service free plan, published at https://cooperemail.com/pricing and https://cooperemail.com/limits, is 5 inboxes, 5,000 emails a month, and 1 custom domain. No card is required for that plan.
+
+Reviewers on Cursor, Claude, ChatGPT, or Grok Bot:
+
+1. Install this plugin, or add `https://cooperemail.com/mcp`.
+2. Complete OAuth before any inbox is created.
+3. Create the inbox while that session is signed in, then send and read mail on that same account.
+4. Privacy policy: https://cooperemail.com/privacy. Terms of service: https://cooperemail.com/terms.
+
+Reviewers using HTTP, or a client that cannot do OAuth:
+
+1. `POST https://cooperemail.com/api/v1/onboard` with a `username`. The call takes no auth and no card.
+2. Store `api_key`. It is shown once.
+3. Send `Authorization: Bearer` on later HTTP and MCP requests.
+
+That key does not become an OAuth login. Installing the plugin does not create an inbox and does not attach a key by itself. Support: ops@avatar33.com.
 
 ## Connect an agent
 
@@ -73,7 +96,7 @@ To try it locally before it is listed, copy this repository into `~/.cursor/plug
 
 The `cooper-email` npm package is not published yet. Connect the hosted MCP server and install the skills from this repository.
 
-**Hosted MCP:** [`https://cooperemail.com/mcp`](https://cooperemail.com/mcp) (Streamable HTTP). Sign in with OAuth on first use, or send `Authorization: Bearer coop_live_…`. Per-client steps are in [Connect the hosted MCP server](#connect-the-hosted-mcp-server). In Cursor, the [plugin above](#cursor-plugin) registers that server.
+**Hosted MCP:** [`https://cooperemail.com/mcp`](https://cooperemail.com/mcp) (Streamable HTTP). Where the client supports OAuth, finish sign-in before creating an inbox. A Bearer key (`coop_live_…`) is the other path, for HTTP and for clients you configure with that header. The two paths are not the same account. Per-client steps are in [Connect the hosted MCP server](#connect-the-hosted-mcp-server). In Cursor, the [plugin above](#cursor-plugin) registers that server with no key in the file.
 
 **Skills:** the guides in [`skills/`](skills), listed in the table above. Install one with the [skills](https://skills.sh) CLI:
 
@@ -106,7 +129,7 @@ Replace `cooper-email` with any other name from that table (`cooper-check-email`
 
 ## Get an API key
 
-Onboarding needs no auth. It returns an API key (`coop_live_…`, shown once) and your first inbox:
+This is the HTTP API-key path, not the OAuth path. It needs no auth. It returns an API key (`coop_live_…`, shown once) and a first inbox on a new account. Saving the key does not sign Cursor, Claude, ChatGPT, or Grok Bot in. Finish OAuth on those clients before creating an inbox if you want that connector to use the inbox.
 
 ```bash
 curl -s -X POST https://cooperemail.com/api/v1/onboard \
@@ -221,9 +244,13 @@ Python: `from cooper_email import verify_webhook_signature`. Event bodies look l
 
 Connect [`https://cooperemail.com/mcp`](https://cooperemail.com/mcp) and use the skills in [`skills/`](skills) ([above](#connect-an-agent)). To configure a client by hand:
 
-Endpoint: **`https://cooperemail.com/mcp`** (Streamable HTTP). Claude and ChatGPT connectors sign in with OAuth. Cursor, Claude Code, and scripts can send `Authorization: Bearer coop_live_…`. The `cooper_onboard` tool works before you have a key.
+Endpoint: **`https://cooperemail.com/mcp`** (Streamable HTTP).
 
-**Claude (claude.ai / Claude Desktop)**: Settings → Connectors → Add custom connector. Name `Cooper Email`, URL `https://cooperemail.com/mcp`, then approve Cooper on the OAuth screen. Then ask: "Create a Cooper Email inbox for research-bot."
+OAuth clients (Cursor plugin, Claude, Claude Code, ChatGPT, Grok Bot): approve Cooper's consent screen first, then create the inbox on that signed-in account. Do not call `cooper_onboard` before that. An unauthenticated `cooper_onboard` returns a one-time API key and does not authorize the connector. A later OAuth approval uses the OAuth account, which can be a different inbox. The onboard inbox is reachable only by sending the saved key as `Authorization: Bearer`.
+
+Clients with no OAuth, and scripts: call `cooper_onboard` or `POST /api/v1/onboard`, store the key, and send it on the next request.
+
+**Claude (claude.ai / Claude Desktop)**: Settings → Connectors → Add custom connector. Name `Cooper Email`, URL `https://cooperemail.com/mcp`, then approve Cooper on the OAuth screen before any inbox is created. Then ask: "Create a Cooper Email inbox for research-bot."
 
 **Claude Code**:
 
@@ -238,9 +265,9 @@ Or install the **Claude Code plugin** (MCP server plus email and human-in-the-lo
 /plugin install cooper-email@cooper-email
 ```
 
-See [`claude-plugin/`](claude-plugin).
+Finish OAuth in `/mcp` before creating an inbox. See [`claude-plugin/`](claude-plugin). The Claude Code plugin version in this repo is 1.2.2.
 
-**Cursor**: add to `~/.cursor/mcp.json` (or `.cursor/mcp.json` in a project):
+**Cursor**: install the plugin in [Cursor plugin](#cursor-plugin) and finish OAuth before creating an inbox. The plugin's `mcp.json` has no Authorization header. To pin a saved API key instead, add this to `~/.cursor/mcp.json` (or `.cursor/mcp.json` in a project). That header selects the key's account; approving OAuth on a different server entry does not switch this header onto the OAuth inbox:
 
 ```json
 {
@@ -255,7 +282,7 @@ See [`claude-plugin/`](claude-plugin).
 }
 ```
 
-**ChatGPT**: add a custom connector (in Settings → Apps & Connectors; some plans need Developer mode turned on first) with MCP server URL `https://cooperemail.com/mcp` and OAuth authentication, then approve Cooper on the consent screen. Menu names vary by plan.
+**ChatGPT**: add a custom connector (in Settings → Apps & Connectors; some plans need Developer mode turned on first) with MCP server URL `https://cooperemail.com/mcp` and OAuth authentication, then approve Cooper on the consent screen before creating an inbox. Menu names vary by plan.
 
 Config for Windsurf, VS Code, Codex CLI, and Goose, plus the tool list, is in [`mcp/`](mcp). The MCP Registry manifest is [`server.json`](server.json). Cline install steps: [`llms-install.md`](llms-install.md).
 

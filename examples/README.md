@@ -2,7 +2,7 @@
 
 Short, runnable examples. Every example reads the API key from `COOPER_API_KEY`; never hard-code keys.
 
-Get a key and an inbox with one unauthenticated call (or from the MCP `cooper_onboard` tool):
+HTTP examples need a Bearer key. One unauthenticated `POST /api/v1/onboard` (or MCP `cooper_onboard` with no credentials) returns that key once. It does not sign an OAuth client in, and approving OAuth later does not attach the key:
 
 ```bash
 curl -s -X POST https://cooperemail.com/api/v1/onboard \

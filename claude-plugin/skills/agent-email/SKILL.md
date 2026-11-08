@@ -7,7 +7,7 @@ description: Give the agent its own email address with Cooper Email. Use when th
 
 Use the Cooper Email connector tools (`cooper_*`). Don't ask the user to run curl or open a dashboard when these tools work.
 
-1. If the user has no inbox yet, call `cooper_onboard` (or `cooper_create_inbox` when already signed in) with a short, descriptive username. Tell the user the new address. If an API key is returned, show it once and never repeat it.
+1. If the connector is not signed in yet, finish OAuth before creating an inbox. Then call `cooper_create_inbox` with a short, descriptive username and tell the user the new address. Do not call `cooper_onboard` first: with no credentials it returns a one-time API key for a different account, and a later OAuth approval does not attach that key. If a key is returned anyway, show it once, never repeat it, and do not assume the signed-in tools can see that inbox.
 2. To send, call `cooper_send_message` with `to`, `subject`, and `text` and/or `html`. Pass a stable `client_id` so a retry doesn't send twice. Attachments are `{filename, content_type, content_base64}`.
 3. To read, call `cooper_list_messages` (newest first, summaries only), then `cooper_get_message` for the one the user cares about. Use `cooper_search` for anything across the account.
 4. For push delivery, call `cooper_register_webhook` with the user's HTTPS URL, and optionally an `inbox_id`.
