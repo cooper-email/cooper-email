@@ -4,16 +4,18 @@ Cooper Email runs a hosted, remote MCP server. There is nothing to install or ru
 
 - Endpoint: `https://cooperemail.com/mcp`
 - Transport: Streamable HTTP
-- Auth: OAuth 2.1 + PKCE (Claude and ChatGPT custom connectors), or `Authorization: Bearer coop_live_…` (Cursor, Claude Code, scripts)
+- Auth: OAuth 2.1 + PKCE (Cursor plugin, Claude, ChatGPT, Grok Bot), or `Authorization: Bearer coop_live_…` (scripts and clients with no OAuth)
 - OAuth discovery: `https://cooperemail.com/.well-known/oauth-protected-resource` and `https://cooperemail.com/.well-known/oauth-authorization-server`
 - Registry entry: [`../server.json`](../server.json) (`com.cooperemail/cooper-email` in the official MCP Registry)
 - Docs: https://cooperemail.com/docs/mcp
+- Privacy: https://cooperemail.com/privacy
+- Terms: https://cooperemail.com/terms
 
-`cooper_onboard` works without a key: it creates an account, an inbox, and returns an API key. The other tools need the key or an OAuth token.
+Finish OAuth before creating an inbox when the client supports it. `cooper_onboard` with no credentials creates an account, an inbox, and a one-time API key. That key is not attached to a later OAuth login. Other tools need either that saved Bearer key or an OAuth token, and those two credentials can be different accounts. A 401 is not fixed by calling `cooper_onboard`.
 
 ## Client config files
 
-Replace `coop_live_YOUR_KEY` with your key. If your client supports OAuth for remote MCP servers, you can drop the `headers` block and sign in instead.
+Replace `coop_live_YOUR_KEY` with a key you already saved. If the client supports OAuth, leave the header out and finish sign-in before creating an inbox. Dropping the header does not move the key's inbox onto the OAuth account.
 
 | Client | File | Where it goes |
 | --- | --- | --- |
@@ -29,7 +31,7 @@ Replace `coop_live_YOUR_KEY` with your key. If your client supports OAuth for re
 
 | Tool | What it does |
 | --- | --- |
-| `cooper_onboard` | Create an account + inbox and return an API key (no auth) |
+| `cooper_onboard` | Unauthenticated: create a separate account, inbox, and one-time API key. Does not sign an OAuth connector in |
 | `cooper_create_inbox`, `cooper_list_inboxes` | Manage inboxes |
 | `cooper_send_message` | Send mail (text, HTML, attachments, idempotent `client_id`) |
 | `cooper_list_messages`, `cooper_get_message`, `cooper_search` | Read and search mail |

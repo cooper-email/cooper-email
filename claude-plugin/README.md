@@ -11,7 +11,9 @@ In Claude Code:
 /plugin install cooper-email@cooper-email
 ```
 
-Then run `/mcp`, select `cooper-email`, and sign in on Cooper's OAuth screen (create an inbox or paste an existing `coop_live_…` key).
+Then run `/mcp`, select `cooper-email`, and finish OAuth before creating an inbox. Create the inbox on that signed-in account (`cooper_create_inbox`, or the create option on the consent screen).
+
+`cooper_onboard` with no credentials returns a one-time API key for a different account. Approving OAuth does not attach that key, and later signed-in tools can show a different inbox. Use the saved key as `Authorization: Bearer` only when you want that other account.
 
 ## Use it
 
@@ -21,4 +23,6 @@ Then run `/mcp`, select `cooper-email`, and sign in on Cooper's OAuth screen (cr
 
 ## Data
 
-The plugin itself stores nothing and runs no local code. The MCP server sends the email addresses, subjects, bodies, and attachments you ask it to handle to https://cooperemail.com/mcp, operated by Avatar 8 LLC, which stores your mail so the tools can find and show it. Privacy policy: https://cooperemail.com/privacy. Support: ops@avatar33.com.
+The plugin itself stores nothing and runs no local code. The MCP server sends the email addresses, subjects, bodies, and attachments you ask it to handle to https://cooperemail.com/mcp, operated by Avatar 8 LLC, which stores your mail so the tools can find and show it. Privacy policy: https://cooperemail.com/privacy. Terms of service: https://cooperemail.com/terms. Support: ops@avatar33.com.
+
+Plugin version 1.2.2. The free plan (no card) is published at https://cooperemail.com/pricing. Finish OAuth before creating an inbox; the install does not create one for you.

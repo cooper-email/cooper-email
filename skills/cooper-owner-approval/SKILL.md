@@ -13,8 +13,10 @@ Real email cannot be recalled. With Cooper, a human owner can approve each send
 from their own email client, and the agent can draft first and ask.
 
 Assumes a Cooper inbox and key (`COOPER_API_KEY`, inbox id `$INBOX`). No inbox
-yet? `POST https://cooperemail.com/api/v1/onboard` with `{"username":"<slug>","owner_email":"<human>"}`
-or MCP `cooper_onboard`. Details: https://cooperemail.com/AGENTS.md
+yet on HTTP? `POST https://cooperemail.com/api/v1/onboard` with `{"username":"<slug>","owner_email":"<human>"}`,
+then send the returned key as `Authorization: Bearer`. On an OAuth client,
+finish sign-in first and call `cooper_create_inbox`. `cooper_onboard` does not
+attach its key to that OAuth session. Details: https://cooperemail.com/AGENTS.md
 
 ## 1. Add and verify a human owner
 

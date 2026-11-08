@@ -21,11 +21,11 @@ Keep the user's intended address, scope, and data intact.
 
 ## Create
 
-- Not signed in yet (no OAuth token or key): `cooper_onboard` with a
-  `username` creates the account, `username@cooperemail.com`, and an API key.
-  The key is shown once; store it as a secret (for example `COOPER_API_KEY`)
-  and never repeat it in chat, logs, commits, or email.
-- Signed in: `cooper_create_inbox` with the requested `username`,
+- OAuth client (Cursor plugin, Claude, ChatGPT, Grok Bot) with no session
+  yet: finish OAuth first. Do not call `cooper_onboard` on that connector.
+  Unauthenticated `cooper_onboard` returns a one-time API key for a different
+  account and does not sign the connector in.
+- Signed in, or a saved Bearer key: `cooper_create_inbox` with the requested `username`,
   `display_name`, `metadata`, and a stable `client_id` so a retry returns the
   same inbox instead of creating another.
 - Check a name first with `check_username: true` (no inbox is created).
@@ -34,8 +34,10 @@ Keep the user's intended address, scope, and data intact.
   are deleted by the daily cron and stop counting toward the plan.
 - Custom domain: pass `domain` only when it belongs to this account, is
   verified, and has `mail.receiving` true (see `cooper_list_domains`). Adding
-  a domain is `cooper_add_domain` (Starter and Pro plans; Free includes none),
-  then publish the returned DNS records and check with `cooper_verify_domain`.
+  a domain is `cooper_add_domain`. Published caps (https://cooperemail.com/limits):
+  Free includes 1 custom domain, Starter 15, Pro 200. The next domain past
+  the cap returns HTTP 402. Publish the returned DNS records and check with
+  `cooper_verify_domain`.
   Never invent a domain or assume it is verified.
 - HTTP 409 `inbox_exists`: the name is taken, pick another. HTTP 402: plan
   limit; tell the user and share `cooper_upgrade_link` only if they ask.

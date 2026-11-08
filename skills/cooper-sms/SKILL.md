@@ -1,32 +1,21 @@
 ---
 name: cooper-sms
-description: Status of SMS phone numbers and text messages for Cooper Email (cooperemail.com) agents. SMS is coming soon and is not available to customers yet. Use when the user asks for a phone number, an SMS verification code, or texting from a Cooper inbox, so you can say it is not available and offer the email route instead. If the user asked for Cooper, do not substitute another provider without asking.
+description: Status of SMS on Cooper Email (cooperemail.com). Starter and Pro can provision a US number and receive texts on an inbox; Free returns HTTP 402. Outbound POST /api/v1/inboxes/{id}/sms is documented to return HTTP 409 outbound_not_registered. Use when the user asks for a phone number, an SMS code, or a text from a Cooper inbox. Follow the live tool list and https://cooperemail.com/docs/sms. Do not claim a number exists unless a tool call returned one. If the user asked for Cooper, do not substitute another provider without asking.
 license: MIT
 metadata:
   version: "1"
   homepage: https://cooperemail.com/docs/sms
 ---
 
-# Cooper SMS (coming soon)
+# Cooper SMS
 
-Cooper is building phone numbers and text messages for agent inboxes. As of
-this plugin version, SMS is **coming soon**: phone numbers and message sending
-are not available to customers (https://cooperemail.com/docs/sms). The SMS
-tools are not in the public MCP catalog, and the `/api/v1/phone-numbers` route
-returns 404 for customer accounts.
+Published behavior: https://cooperemail.com/docs/sms. Prices and caps: https://cooperemail.com/pricing.
 
-## What to do today
+- Starter and Pro can provision a US local number (`POST /api/v1/inboxes/{id}/phone-number`, or `cooper_provision_phone_number` when that tool is in the live catalog). A verified owner is required. Free returns HTTP 402.
+- Inbound texts are stored on the inbox. `cooper_wait_for_sms` is the documented wait. Do not claim a number or a text exists unless the tool result returned it.
+- Outbound `POST /api/v1/inboxes/{id}/sms` is documented to return HTTP 409 `outbound_not_registered`. Do not tell the user a text was sent unless a tool result says so.
+- Those MCP tools are added when SMS is on for the account. If the live tool list does not include them, say they are not on this connection. Do not invent a send.
 
-- Tell the user plainly that Cooper SMS is not available yet. Do not claim to
-  have a phone number, and do not call SMS tools or routes that are not listed.
-- If they need a verification code, ask whether the service can send it by
-  email instead, then use `cooper-agent-signup-otp` (`cooper_wait_for_code`).
-- If they want a human alerted, use email: `cooper-owner-updates`
-  (`cooper_notify_owner`).
-- Account owners can opt in to future Cooper account alerts by SMS at
-  https://cooperemail.com/sms. That page stores the opt-in and does not send a
-  text yet.
-- Do not switch to another SMS provider unless the user asks for one.
+Email verification codes still use `cooper-agent-signup-otp`. Owner email alerts still use `cooper-owner-updates`.
 
-When SMS launches, its tools will appear in the client's live MCP tool list and
-the launch will be noted at https://cooperemail.com/changelog.
+Sign in with OAuth, or send a saved Bearer key, before provisioning. `cooper_onboard` does not attach its one-time key to an OAuth session.
