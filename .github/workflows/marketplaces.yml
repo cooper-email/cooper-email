@@ -1,0 +1,61 @@
+name: Validate plugin marketplaces
+
+on:
+  pull_request:
+    paths:
+      - .agents/**
+      - .claude-plugin/**
+      - .codex-plugin/**
+      - .cursor-plugin/**
+      - .plugin/**
+      - claude-plugin/**
+      - assets/**
+      - skills/**
+      - mcp.json
+      - gemini-extension.json
+      - GEMINI.md
+      - scripts/validate_plugins.py
+      - .github/workflows/marketplaces.yml
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  marketplaces:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: "3.12"
+
+      - name: Manifests agree (Cursor, Codex, Copilot, Gemini)
+        run: python3 scripts/validate_plugins.py
+
+      - name: Codex marketplace install
+        run: |
+          npm install --global @openai/codex@0.167.0
+          codex_home="$(mktemp -d)"
+          CODEX_HOME="$codex_home" codex plugin marketplace add . --json
+          CODEX_HOME="$codex_home" codex plugin list --available --json | tee /tmp/codex-plugins.json
+          grep -q '"pluginId": "cooper-email@cooper-email"' /tmp/codex-plugins.json
+          CODEX_HOME="$codex_home" codex plugin add cooper-email@cooper-email --json
+
+      - name: Claude Code plugin
+        run: |
+          npm install --global @anthropic-ai/claude-code@2.1.319
+          claude plugin validate .
+          claude plugin validate claude-plugin
+
+      - name: Gemini CLI extension
+        run: |
+          npm install --global @google/gemini-cli@0.70.0
+          gemini extensions validate .

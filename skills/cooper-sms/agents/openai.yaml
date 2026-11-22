@@ -1,0 +1,13 @@
+interface:
+  display_name: "Cooper SMS"
+  short_description: "Check SMS status on a Cooper inbox"
+  default_prompt: "Use $cooper-sms to check whether this inbox can receive text messages."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cooper-email"
+      description: "Cooper Email hosted MCP server"
+      transport: "streamable_http"
+      url: "https://cooperemail.com/mcp"
+policy:
+  allow_implicit_invocation: true

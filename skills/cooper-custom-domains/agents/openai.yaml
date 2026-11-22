@@ -1,0 +1,13 @@
+interface:
+  display_name: "Custom Domains"
+  short_description: "Put agent inboxes on your own domain"
+  default_prompt: "Use $cooper-custom-domains to add my domain and show the DNS records I need."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cooper-email"
+      description: "Cooper Email hosted MCP server"
+      transport: "streamable_http"
+      url: "https://cooperemail.com/mcp"
+policy:
+  allow_implicit_invocation: true

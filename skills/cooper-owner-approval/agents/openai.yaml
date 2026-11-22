@@ -1,0 +1,13 @@
+interface:
+  display_name: "Owner Approval"
+  short_description: "Hold agent email for a human's approval"
+  default_prompt: "Use $cooper-owner-approval to draft this email and hold it for my approval."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cooper-email"
+      description: "Cooper Email hosted MCP server"
+      transport: "streamable_http"
+      url: "https://cooperemail.com/mcp"
+policy:
+  allow_implicit_invocation: true

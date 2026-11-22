@@ -1,0 +1,20 @@
+{
+  "name": "cooper-email",
+  "interface": {
+    "displayName": "Cooper Email"
+  },
+  "plugins": [
+    {
+      "name": "cooper-email",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

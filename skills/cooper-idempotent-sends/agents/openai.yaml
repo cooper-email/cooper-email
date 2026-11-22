@@ -1,0 +1,13 @@
+interface:
+  display_name: "Safe Retries"
+  short_description: "Retry sends without sending twice"
+  default_prompt: "Use $cooper-idempotent-sends to make this send loop safe to retry."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cooper-email"
+      description: "Cooper Email hosted MCP server"
+      transport: "streamable_http"
+      url: "https://cooperemail.com/mcp"
+policy:
+  allow_implicit_invocation: true
