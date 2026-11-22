@@ -1,0 +1,13 @@
+interface:
+  display_name: "Owner Updates"
+  short_description: "Email progress updates and get replies as tasks"
+  default_prompt: "Use $cooper-owner-updates to email me progress on this task and wait for my reply."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cooper-email"
+      description: "Cooper Email hosted MCP server"
+      transport: "streamable_http"
+      url: "https://cooperemail.com/mcp"
+policy:
+  allow_implicit_invocation: true

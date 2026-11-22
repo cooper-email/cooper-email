@@ -1,0 +1,13 @@
+interface:
+  display_name: "Bounces"
+  short_description: "Handle bounces and the suppression list"
+  default_prompt: "Use $cooper-suppressions-bounces to explain why this send was suppressed."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cooper-email"
+      description: "Cooper Email hosted MCP server"
+      transport: "streamable_http"
+      url: "https://cooperemail.com/mcp"
+policy:
+  allow_implicit_invocation: true

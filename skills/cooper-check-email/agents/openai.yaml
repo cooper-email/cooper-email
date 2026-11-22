@@ -1,0 +1,13 @@
+interface:
+  display_name: "Check Email"
+  short_description: "Read, search, and triage Cooper inboxes"
+  default_prompt: "Use $cooper-check-email to summarize unread mail in my Cooper inbox."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cooper-email"
+      description: "Cooper Email hosted MCP server"
+      transport: "streamable_http"
+      url: "https://cooperemail.com/mcp"
+policy:
+  allow_implicit_invocation: true

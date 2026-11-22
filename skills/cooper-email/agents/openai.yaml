@@ -1,0 +1,13 @@
+interface:
+  display_name: "Cooper Email"
+  short_description: "Real email inboxes for AI agents"
+  default_prompt: "Use $cooper-email to give this agent an email address and send me a test email."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cooper-email"
+      description: "Cooper Email hosted MCP server"
+      transport: "streamable_http"
+      url: "https://cooperemail.com/mcp"
+policy:
+  allow_implicit_invocation: true

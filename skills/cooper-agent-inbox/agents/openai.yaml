@@ -1,0 +1,13 @@
+interface:
+  display_name: "Agent Inbox"
+  short_description: "Give the agent its own Cooper inbox"
+  default_prompt: "Use $cooper-agent-inbox to create an inbox for this agent and check it for replies."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cooper-email"
+      description: "Cooper Email hosted MCP server"
+      transport: "streamable_http"
+      url: "https://cooperemail.com/mcp"
+policy:
+  allow_implicit_invocation: true

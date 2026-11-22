@@ -25,12 +25,14 @@ This repository holds the open-source client side of Cooper Email: the TypeScrip
 ## Available on
 
 - [Official MCP Registry](https://registry.modelcontextprotocol.io/v0.1/servers?search=com.cooperemail/cooper-email&version=latest): `com.cooperemail/cooper-email`
+- [ChatGPT plugin directory](https://chatgpt.com/plugins/plugin_asdk_app_6a9c72b1e468819190e4d653372612fc) (shared by ChatGPT and Codex)
 - [Claude connectors directory](https://claude.ai/directory/connectors/cooper-email): Community connector
 - [Claude Code plugin](claude-plugin): `/plugin marketplace add cooper-email/cooper-email`, then `/plugin install cooper-email@cooper-email`
 - [Smithery](https://smithery.ai/servers/ops-8fnm/cooper-email)
 - [Glama](https://glama.ai/mcp/connectors/com.cooperemail/cooper-email)
 - [MCP Market](https://mcpmarket.com/server/cooper-email)
 - [mcpservers.org](https://mcpservers.org/servers/cooperemail-com-docs-mcp)
+- [skills.sh](https://skills.sh/cooper-email/cooper-email): `npx skills add cooper-email/cooper-email`
 
 ## Works with
 
@@ -44,6 +46,22 @@ Supported through a config file; no directory listing yet. Copy-paste configs: h
 - [Goose](https://cooperemail.com/integrations#goose)
 
 The same list is published at https://cooperemail.com/#available-on and in https://cooperemail.com/llms.txt.
+
+## Install as a plugin or extension
+
+This one repository is a plugin package for several agents. Each install registers the hosted MCP server `https://cooperemail.com/mcp` (no key in any config file) and adds the skills in [`skills/`](skills). Sign in with OAuth before creating an inbox.
+
+| Agent | Install | Manifest |
+| --- | --- | --- |
+| Claude Code | `/plugin marketplace add cooper-email/cooper-email`, then `/plugin install cooper-email@cooper-email` | [`claude-plugin/`](claude-plugin) |
+| Codex | `codex plugin marketplace add cooper-email/cooper-email`, then `codex plugin add cooper-email@cooper-email` | [`.codex-plugin/plugin.json`](.codex-plugin/plugin.json), [`.agents/plugins/marketplace.json`](.agents/plugins/marketplace.json) |
+| Gemini CLI | `gemini extensions install https://github.com/cooper-email/cooper-email`, then `/mcp auth cooper-email` | [`gemini-extension.json`](gemini-extension.json), [`GEMINI.md`](GEMINI.md) |
+| GitHub Copilot CLI | `copilot plugin install cooper-email/cooper-email` | [`.plugin/plugin.json`](.plugin/plugin.json) |
+| Cursor | See [Cursor plugin](#cursor-plugin) | [`.cursor-plugin/plugin.json`](.cursor-plugin/plugin.json) |
+| Hermes Agent | `hermes skills install well-known:https://cooperemail.com/.well-known/skills/cooper-email` | [`/.well-known/skills/index.json`](https://cooperemail.com/.well-known/skills/index.json) |
+| Any Agent Skills client | `npx skills add cooper-email/cooper-email` | [`skills/`](skills) |
+
+`python3 scripts/validate_plugins.py` checks that the manifests agree. CI also installs the Codex plugin, validates the Claude Code plugin, and validates the Gemini extension on every change.
 
 ## Cursor plugin
 

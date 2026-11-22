@@ -1,0 +1,13 @@
+interface:
+  display_name: "Manage Inboxes"
+  short_description: "Create, list, pause, or delete inboxes"
+  default_prompt: "Use $cooper-manage-inboxes to list my Cooper inboxes and their status."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cooper-email"
+      description: "Cooper Email hosted MCP server"
+      transport: "streamable_http"
+      url: "https://cooperemail.com/mcp"
+policy:
+  allow_implicit_invocation: true

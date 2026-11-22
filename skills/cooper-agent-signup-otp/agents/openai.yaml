@@ -1,0 +1,13 @@
+interface:
+  display_name: "Signup Codes"
+  short_description: "Sign up and read emailed verification codes"
+  default_prompt: "Use $cooper-agent-signup-otp to sign up for this service and read the verification code."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "cooper-email"
+      description: "Cooper Email hosted MCP server"
+      transport: "streamable_http"
+      url: "https://cooperemail.com/mcp"
+policy:
+  allow_implicit_invocation: true

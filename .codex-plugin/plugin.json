@@ -1,0 +1,51 @@
+{
+  "name": "cooper-email",
+  "version": "1.4.1",
+  "description": "Email inboxes for AI agents with a human in the loop: owner-approved drafts, built-in verification-code reading, owner updates and email tasks, and custom domains. The free plan includes 5 inboxes, 5,000 emails a month, and 1 custom domain. Sign in with OAuth before creating an inbox. Create inboxes, send, receive, search, and register webhooks on the hosted MCP server.",
+  "author": {
+    "name": "Avatar 8 LLC",
+    "email": "ops@avatar33.com",
+    "url": "https://cooperemail.com"
+  },
+  "homepage": "https://cooperemail.com/docs/mcp",
+  "repository": "https://github.com/cooper-email/cooper-email",
+  "license": "MIT",
+  "keywords": [
+    "email",
+    "inbox",
+    "mcp",
+    "ai-agent",
+    "email-api",
+    "otp",
+    "verification-code",
+    "human-in-the-loop",
+    "owner-approval",
+    "drafts",
+    "custom-domains",
+    "webhooks"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./mcp.json",
+  "interface": {
+    "displayName": "Cooper Email",
+    "shortDescription": "Email inboxes for AI agents, with a human in the loop",
+    "longDescription": "Give your agent its own real email inboxes on Cooper Email. Create addresses, send, reply, search, and wait for mail, read verification codes, hold drafts for a human owner's approval, send owner updates and receive emailed tasks, use your own domain, and register webhooks. Uses the hosted MCP server at cooperemail.com/mcp; sign in with OAuth before creating an inbox. The free plan includes 5 inboxes, 5,000 emails a month, and 1 custom domain.",
+    "developerName": "Avatar 8 LLC",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://cooperemail.com",
+    "privacyPolicyURL": "https://cooperemail.com/privacy",
+    "termsOfServiceURL": "https://cooperemail.com/terms",
+    "defaultPrompt": [
+      "Create an inbox for this project and send me a test email.",
+      "Check my Cooper inbox and summarize unread threads.",
+      "Sign up for this service with a new inbox and read the verification code."
+    ],
+    "brandColor": "#2F6FED",
+    "composerIcon": "./assets/logo.svg",
+    "logo": "./assets/logo.svg"
+  }
+}
