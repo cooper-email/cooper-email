@@ -1,6 +1,6 @@
 {
   "name": "cooper-email",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Email inboxes for AI agents with a human in the loop: create inboxes, send, receive, search, wait for mail and verification codes, owner-approved drafts, owner updates, custom domains, and webhooks on the hosted Cooper Email MCP server.",
   "contextFileName": "GEMINI.md",
   "mcpServers": {

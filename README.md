@@ -49,7 +49,7 @@ The same list is published at https://cooperemail.com/#available-on and in https
 
 ## Install as a plugin or extension
 
-This one repository is a plugin package for several agents. Each install registers the hosted MCP server `https://cooperemail.com/mcp` (no key in any config file) and adds the skills in [`skills/`](skills). Sign in with OAuth before creating an inbox.
+This one repository is a plugin package for several agents. The repository root is also a portable [Agent Plugin](https://agent-plugins.org) (`plugin.json`, `mcp.json`, `skills/`). Each install registers the hosted MCP server `https://cooperemail.com/mcp` (no key in any config file) and adds the skills in [`skills/`](skills). Sign in with OAuth before creating an inbox.
 
 | Agent | Install | Manifest |
 | --- | --- | --- |
@@ -58,6 +58,7 @@ This one repository is a plugin package for several agents. Each install registe
 | Gemini CLI | `gemini extensions install https://github.com/cooper-email/cooper-email`, then `/mcp auth cooper-email` | [`gemini-extension.json`](gemini-extension.json), [`GEMINI.md`](GEMINI.md) |
 | GitHub Copilot CLI | `copilot plugin install cooper-email/cooper-email` | [`.plugin/plugin.json`](.plugin/plugin.json) |
 | Cursor | See [Cursor plugin](#cursor-plugin) | [`.cursor-plugin/plugin.json`](.cursor-plugin/plugin.json) |
+| Kiro and other [Agent Plugins](https://agent-plugins.org) clients | Kiro: Powers → Add Custom Power → Import power from GitHub → `https://github.com/cooper-email/cooper-email` | [`plugin.json`](plugin.json), [`mcp.json`](mcp.json) |
 | Hermes Agent | `hermes skills install well-known:https://cooperemail.com/.well-known/skills/cooper-email` | [`/.well-known/skills/index.json`](https://cooperemail.com/.well-known/skills/index.json) |
 | Any Agent Skills client | `npx skills add cooper-email/cooper-email` | [`skills/`](skills) |
 
@@ -65,7 +66,7 @@ This one repository is a plugin package for several agents. Each install registe
 
 ## Cursor plugin
 
-This repository is also a Cursor plugin (`.cursor-plugin/plugin.json`, version 1.4.1). It registers the hosted MCP server `https://cooperemail.com/mcp` with no API key in the config, and adds these skills from [`skills/`](skills):
+This repository is also a Cursor plugin (`.cursor-plugin/plugin.json`, version 1.4.2). It registers the hosted MCP server `https://cooperemail.com/mcp` with no API key in the config, and adds these skills from [`skills/`](skills):
 
 | Skill | What it covers |
 | --- | --- |
@@ -285,7 +286,7 @@ Or install the **Claude Code plugin** (MCP server plus email and human-in-the-lo
 
 Finish OAuth in `/mcp` before creating an inbox. See [`claude-plugin/`](claude-plugin). The Claude Code plugin version in this repo is 1.2.2.
 
-**Cursor**: install the plugin in [Cursor plugin](#cursor-plugin) and finish OAuth before creating an inbox. The plugin's `mcp.json` has no Authorization header. To pin a saved API key instead, add this to `~/.cursor/mcp.json` (or `.cursor/mcp.json` in a project). That header selects the key's account; approving OAuth on a different server entry does not switch this header onto the OAuth inbox:
+**Cursor**: install the plugin in [Cursor plugin](#cursor-plugin) and finish OAuth before creating an inbox. The plugin's `.mcp.json` has no Authorization header. To pin a saved API key instead, add this to `~/.cursor/mcp.json` (or `.cursor/mcp.json` in a project). That header selects the key's account; approving OAuth on a different server entry does not switch this header onto the OAuth inbox:
 
 ```json
 {

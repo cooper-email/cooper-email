@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check that every plugin/extension manifest in this repo agrees and points at real files.
 
-Covers Cursor (.cursor-plugin), Codex (.codex-plugin + .agents/plugins), GitHub Copilot CLI
+Covers the root Agent Plugin (plugin.json + mcp.json), Cursor (.cursor-plugin), Codex (.codex-plugin + .agents/plugins), GitHub Copilot CLI
 (.plugin), Gemini CLI (gemini-extension.json), and the skills folder they share. The Claude Code
 plugin lives in claude-plugin/ and is checked by `claude plugin validate`.
 """
@@ -20,6 +20,12 @@ CURSOR_SCHEMA = (
     "7a583913eb1b8d1a0ee76753d1a2cf072e7b54f9/schemas/plugin.schema.json"
 )
 MCP_URL = "https://cooperemail.com/mcp"
+AP_PLUGIN_SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
+AP_MCP_SCHEMA = "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json"
+AP_PLUGIN_KEYS = {
+    "$schema", "name", "version", "description", "author", "homepage",
+    "repository", "license", "keywords", "extensions",
+}
 NAME_RE = re.compile(r"^[a-z0-9]([a-z0-9.-]*[a-z0-9])?$")
 
 errors: list[str] = []
@@ -65,7 +71,9 @@ def main() -> int:
     copilot = load(".plugin/plugin.json")
     gemini = load("gemini-extension.json")
     market = load(".agents/plugins/marketplace.json")
-    mcp = load("mcp.json")
+    mcp = load(".mcp.json")
+    agent_plugin = load("plugin.json")
+    agent_mcp = load("mcp.json")
 
     for label, manifest in (("cursor", cursor), ("codex", codex), ("copilot", copilot), ("gemini", gemini)):
         if manifest.get("name") != "cooper-email":
@@ -93,9 +101,26 @@ def main() -> int:
 
     servers = mcp.get("mcpServers", {})
     if servers.get("cooper-email", {}).get("url") != MCP_URL:
-        fail("mcp.json: cooper-email must point at the hosted MCP server")
+        fail(".mcp.json: cooper-email must point at the hosted MCP server")
     if any("headers" in s or "env" in s for s in servers.values()):
-        fail("mcp.json: no credentials or headers may be committed")
+        fail(".mcp.json: no credentials or headers may be committed")
+
+    # Root Agent Plugin (agent-plugins.org 1.0.0): plugin.json + mcp.json + skills/
+    if agent_plugin.get("$schema") != AP_PLUGIN_SCHEMA:
+        fail("plugin.json: $schema must be the Agent Plugins 1.0.0 plugin schema")
+    for key in ("name", "version", "description", "author", "keywords"):
+        if not agent_plugin.get(key):
+            fail(f"plugin.json: missing {key}")
+    extra = set(agent_plugin) - AP_PLUGIN_KEYS
+    if extra:
+        fail(f"plugin.json: keys not in the Agent Plugins schema: {sorted(extra)}")
+    if agent_mcp.get("$schema") != AP_MCP_SCHEMA:
+        fail("mcp.json: $schema must be the Agent Plugins 1.0.0 MCP schema")
+    if set(agent_mcp) - {"$schema", "mcpServers"}:
+        fail("mcp.json: only $schema and mcpServers are allowed")
+    server = agent_mcp.get("mcpServers", {}).get("cooper-email", {})
+    if server != {"type": "streamable-http", "url": MCP_URL}:
+        fail("mcp.json: cooper-email must be streamable-http at the hosted MCP server, with no headers")
     if gemini.get("mcpServers", {}).get("cooper-email", {}).get("url") != MCP_URL:
         fail("gemini-extension.json: cooper-email must point at the hosted MCP server")
     if gemini.get("contextFileName"):
