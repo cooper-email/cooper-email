@@ -12,6 +12,8 @@ on:
       - assets/**
       - skills/**
       - mcp.json
+      - .mcp.json
+      - plugin.json
       - gemini-extension.json
       - GEMINI.md
       - scripts/validate_plugins.py
@@ -39,6 +41,19 @@ jobs:
 
       - name: Manifests agree (Cursor, Codex, Copilot, Gemini)
         run: python3 scripts/validate_plugins.py
+
+      - name: Agent Plugins schemas
+        run: |
+          python3 -m pip install --quiet "jsonschema==4.25.1"
+          python3 - <<'PY'
+          import json, urllib.request
+          from jsonschema import Draft202012Validator
+          for doc, url in (("plugin.json", "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"),
+                           ("mcp.json", "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json")):
+              schema = json.load(urllib.request.urlopen(url, timeout=30))
+              Draft202012Validator(schema).validate(json.load(open(doc)))
+              print(f"{doc}: valid against {url}")
+          PY
 
       - name: Codex marketplace install
         run: |

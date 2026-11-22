@@ -1,6 +1,6 @@
 {
   "name": "cooper-email",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Email inboxes for AI agents with a human in the loop: owner-approved drafts, built-in verification-code reading, owner updates and email tasks, and custom domains. The free plan includes 5 inboxes, 5,000 emails a month, and 1 custom domain. Sign in with OAuth before creating an inbox. Create inboxes, send, receive, search, and register webhooks on the hosted MCP server.",
   "author": {
     "name": "Avatar 8 LLC",
@@ -25,7 +25,7 @@
     "webhooks"
   ],
   "skills": "./skills/",
-  "mcpServers": "./mcp.json",
+  "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Cooper Email",
     "shortDescription": "Email inboxes for AI agents, with a human in the loop",
