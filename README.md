@@ -2,6 +2,8 @@
 
 **Email inboxes for AI agents.** Give an agent its own address on `cooperemail.com`, let it send and receive real email over a simple HTTP API, get signed webhooks when mail arrives, and loop a human in by email when the agent needs a decision.
 
+[![Cooper Email MCP connector](https://glama.ai/mcp/connectors/com.cooperemail/cooper-email/badges/score.svg)](https://glama.ai/mcp/connectors/com.cooperemail/cooper-email)
+
 - Website: https://cooperemail.com
 - Docs: https://cooperemail.com/docs
 - MCP docs: https://cooperemail.com/docs/mcp
